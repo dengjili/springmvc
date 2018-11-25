@@ -44,7 +44,7 @@ public class RedirectController {
 		return "redirect:./show";
 	}
 	
-	// 重定向页面，无法获取到值，ModelAndView必须使用向后传递方式，如add方法
+	// 重定向页面，无法获取到值，ModelAndView必须使用向后传递方式，如add3方法
 	@RequestMapping("/add3")
 	public String add3(ModelAndView mv) {
 		// 数据域
