@@ -8,9 +8,11 @@
 
 	<!--使用注解驱动 -->
 	<mvc:annotation-driven />
+	<!-- 	<mvc:annotation-driven conversion-service="conversionService" /> -->
 
 	<!-- priv.dengjl.controller包下的类 -->
 	<context:component-scan base-package="priv.dengjl.controller" />
+	<context:component-scan base-package="priv.dengjl.converter" />
 
 	<!--定义视图解析器 -->
 	<bean
@@ -33,12 +35,33 @@
 			<mvc:mapping path="/attribute/*" />
 			<bean class="priv.dengjl.interceptor.MyInterceptor2" />
 		</mvc:interceptor>
+		 <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang"/>
+        </bean>
 	</mvc:interceptors>
 
 	<!-- 上传文件 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="uploadTempDir" value="sim\\lib2" />
 		<property name="maxUploadSize" value="17367648787" />
 		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<!-- 配置转换器 -->
+	<bean id="conversionService"
+		class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref bean="stringToPojoConverter" />
+			</set>
+		</property>
+	</bean>
+	
+	<!-- 国际化配置 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basename" value="springmvc/msg" />
+		<property name="useCodeAsDefaultMessage" value="true" />
 	</bean>
 </beans>
